@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Tab - Momentum Clone</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;300;400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#111111">
+</head>
+
+<body>
+    <div class="overlay"></div>
+
+    <!-- Name First-Time Popup -->
+    <div class="name-modal-overlay" id="nameModal">
+        <div class="name-modal">
+            <h2>Welcome 👋</h2>
+            <p>What should I call you?</p>
+
+            <input type="text" id="nameModalInput" placeholder="Enter your name" maxlength="20" />
+
+            <button id="saveNameBtn">Continue</button>
+        </div>
+    </div>
+
+    <div id="bgLayer"></div>
+
+    <div class="container">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="top-left">
+                <div class="weather" id="weather">
+                    <span class="weather-icon" id="weatherIcon">☀️</span>
+                    <span class="weather-temp" id="weatherTemp">72°</span>
+                    <span id="weatherCity">Loading...</span>
+                </div>
+                <div class="weather-details" id="weatherDetails">
+                    <p id="weatherDesc">Clear Sky</p>
+                    <p>Humidity: <span id="weatherHumidity">45%</span></p>
+                    <p>Wind: <span id="weatherWind">5 mph</span></p>
+                    <p>Feels like: <span id="weatherFeels">70°</span></p>
+                </div>
+                <div class="links-section" id="linksSection">
+                    <!-- Dynamic links -->
+                </div>
+            </div>
+            <div class="top-right">
+                <button class="settings-btn" id="settingsBtn">⚙</button>
+            </div>
+        </div>
+
+
+
+        <!-- Center Content -->
+        <div class="center-content">
+            <div class="time fade-in" id="clock">00:00</div>
+            <div class="greeting fade-in fade-in-delay-1" id="greeting">
+                Good morning, <span class="name" id="nameDisplay">friend</span>.
+            </div>
+            <div id="nameEditor" style="display:none;" class="greeting">
+                <span id="greetingPrefix">Good morning, </span>
+                <input type="text" class="name-input" id="nameInput" placeholder="Your name" maxlength="20">
+            </div>
+            <div class="focus-section fade-in fade-in-delay-2">
+
+                <!-- 3-dot menu -->
+                <div class="focus-menu">
+                    <button class="focus-dots" onclick="openSearchFromFocus(event)">⋯</button>
+                </div>
+
+                <!-- Search -->
+                <div class="search-container" id="searchContainer">
+                    <input type="text" class="search-box" id="searchBox" placeholder="Search Google..." onkeydown="handleSearch(event)" autofocus>
+                </div>
+
+                <div id="focusQuestion">
+                    <div class="focus-label">What is your main focus for today?</div>
+                    <div class="focus-input-container">
+                        <input type="text" class="focus-input" id="focusInput" placeholder="Today's focus..."
+                            maxlength="50">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Bottom Bar -->
+        <div class="bottom-bar">
+            <div class="bottom-left fade-in fade-in-delay-3 glass-hover">
+                <span class="photo-credit" id="photoCredit">Unsplash</span>
+            </div>
+            <div class="quote-section fade-in fade-in-delay-3 glass-hover">
+                <div class="quote-text" id="quoteText" onclick="newQuote()">"The only way to do great work is to love
+                    what you do."</div>
+                <div class="quote-author" id="quoteAuthor">— Steve Jobs</div>
+            </div>
+            <div class="bottom-right fade-in fade-in-delay-3">
+                <button class="bottom-btn" onclick="toggleTodoPanel()">☑ Todo</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Todo Panel -->
+    <div class="todo-panel" id="todoPanel">
+        <div class="todo-panel-header">
+            <h2>📋 Todo</h2>
+            <button class="todo-close" onclick="toggleTodoPanel()">×</button>
+        </div>
+        <input type="text" class="todo-add-input" id="todoInput" placeholder="Add a new todo...">
+        <ul class="todo-list" id="todoList"></ul>
+    </div>
+
+    <!-- Settings Panel -->
+    <div class="settings-panel" id="settingsPanel">
+        <div class="settings-header">
+            <h2>Settings</h2>
+            <button class="settings-close" onclick="toggleSettings()">×</button>
+        </div>
+        <div class="settings-group">
+            <label>Your Name</label>
+            <input type="text" id="settingsName" placeholder="Enter your name" maxlength="20">
+        </div>
+        <div class="settings-group">
+            <div class="settings-toggle">
+                <span>24-Hour Clock</span>
+                <div class="toggle-switch" id="toggle24h"></div>
+            </div>
+            <div class="settings-toggle">
+                <span>Show Weather</span>
+                <div class="toggle-switch active" id="toggleWeather"></div>
+            </div>
+            <div class="settings-toggle">
+                <span>Show Search</span>
+                <div class="toggle-switch active" id="toggleSearchVis"></div>
+            </div>
+        </div>
+        <div class="settings-group" style="margin-top: 30px;">
+            <button class="bottom-btn"
+                style="width:100%; text-align:center; border: 1px solid rgba(255,255,255,0.2); padding: 10px;"
+                onclick="resetAll()">Reset All Data</button>
+        </div>
+    </div>
+
+    <!-- Add Link Modal -->
+    <div class="modal-overlay" id="linkModal">
+        <div class="modal">
+            <h3>Add Quick Link</h3>
+            <input type="text" id="linkName" placeholder="Name (e.g., YouTube)">
+            <input type="text" id="linkUrl" placeholder="URL (e.g., https://youtube.com)">
+            <div class="modal-buttons">
+                <button class="modal-btn cancel" onclick="closeLinkModal()">Cancel</button>
+                <button class="modal-btn save" onclick="saveLink()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="./js/app.js"></script>
+</body>
+
+</html>
